@@ -1,0 +1,65 @@
+#include <iostream>
+
+using namespace std;
+class Array {
+  private:
+    int lastIndex=-1;
+    int capacity;
+    int *ptr = NULL;
+  public:
+    void createArray(int);
+    void insertData(int, int);
+    bool isFull();
+    void doubleArray(int);
+};
+void Array::createArray(int sizeOfArray) {
+    if(this->ptr != NULL) {
+        delete[] ptr;
+    }
+    this->ptr = new int[sizeOfArray];
+    this->capacity = sizeOfArray;
+}
+void Array::insertData(int index, int data) {
+    if(!isFull()) {
+        *(ptr + index) = data;
+        lastIndex++;
+        for(int i=0; i<this->capacity; i++) {
+            cout<<endl<<*(ptr + i);
+        }
+    } else {
+        doubleArray(data);
+    }
+
+}
+bool Array::isFull() {
+    if(this->lastIndex == this->capacity-1)
+        return true;
+    else
+        return false;
+}
+void Array::doubleArray(int data) {
+    int *temp = new int[this->capacity * 2];
+    this->capacity = this->capacity*2;
+    lastIndex++;
+    for(int i=0; i<this->capacity; i++) {
+         *(temp+i) = *(ptr + i);
+    }
+    for(int i=0; i<this->capacity; i++) {
+         cout<<endl<<"-"<<data<<" "<<*(temp + i);
+    }
+    delete [] ptr;
+    this->ptr = temp;
+}
+int main() {
+    Array a1;
+    a1.createArray(5);
+    a1.insertData(0,66);
+    a1.insertData(1,66);
+    a1.insertData(2,66);
+    a1.insertData(3,66);
+    a1.insertData(4,11);
+    a1.insertData(5,22);
+    cout<<endl<<endl<<"FULL : "<<a1.isFull();
+    cin.get();
+    return 0;
+}
