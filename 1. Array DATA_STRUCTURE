@@ -1,0 +1,124 @@
+#include <iostream>
+using namespace std;
+
+class Array {
+  private:
+    int capacity;
+    int lastIndex;
+    int *ptr;
+    int counter = 0;
+  public:
+    void createArray(int);
+    void insertItem(int, int);
+    void append(int);
+    int getItem(int);
+    bool isEmpty();
+    bool isFull();
+    void del(int);
+    void edit(int, int);
+    int countValues();
+    int getCapacity();
+};
+//create array
+void Array::createArray(int sizeOfArray) {
+    this->ptr = new int[sizeOfArray];
+    this->capacity = sizeOfArray;
+}
+
+//insert value(s) in array at specific index
+void Array::insertItem(int indexOfArray, int value) {
+    if(indexOfArray <= capacity) {
+        *(ptr + indexOfArray) = value;
+        this->lastIndex = indexOfArray;
+        this->counter++;
+    }
+}
+
+//append value in array
+void Array::append(int appendValue) {
+    if(!this->countValues()){
+        this->lastIndex = 0;
+    }
+    else
+        ++lastIndex;
+    *(ptr + lastIndex) = appendValue;
+    this->counter++;
+}
+
+//this function is defines index position of particular item
+int Array::getItem(int item) {
+    for(int i=0; i<this->capacity; i++) {
+        if(*(ptr + i) == item)
+            return i;
+    }
+    return 0;
+}
+
+//this function is check for that array is empty or not
+bool Array::isEmpty() {
+    if(counter != this->capacity)
+        return true;
+    else
+        return false;
+}
+
+//this function is check for that array is full or not
+bool Array::isFull() {
+    if(counter == this->capacity)
+        return true;
+    else
+        return false;
+}
+
+//delete a particular value from array
+void Array::del(int deletedValue) {
+    --counter;
+    --lastIndex;
+    int start;
+    for(int i=0; i<this->capacity; i++) {
+        if(*(ptr + i) == deletedValue) {
+            start = i;
+            break;
+        }
+    }
+    for(int i=start; i<this->capacity; i++) {
+        *(ptr + i) = *(ptr + i)+1;
+    }
+}
+
+//this function performs edit operation in array
+void Array::edit(int index, int value) {
+    for(int i=0; i<this->capacity; i++) {
+        if(index==i) {
+            *(ptr + i) = value;
+        }
+    }
+}
+
+// this function returns no. of values in array
+int Array::countValues() {
+    return this->counter;
+}
+
+//this function returns size of array
+int Array::getCapacity(){
+    return this->capacity;
+}
+int main() {
+    Array a1;
+    a1.createArray(10);
+    a1.insertItem(3,49);
+    a1.append(56);
+    a1.append(57);
+    a1.append(58);
+    a1.getItem(56);
+    a1.del(49);
+    a1.del(56);
+    a1.del(57);
+    a1.del(58);
+    a1.append(99);
+    a1.append(100);
+    a1.edit(3,50);
+    a1.getCapacity();
+    return 0;
+}
