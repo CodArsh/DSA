@@ -44,6 +44,22 @@ void SLL::insertAtStart(int item){
     start=n;
 }
 
+void SLL::insertAtLast(int item){
+    node *n = new node;
+    node *p;
+    p = start;
+    if(start == NULL){
+        start = n;
+    }
+    else{
+        while(p->next!=NULL){
+            p = p->next;
+        }
+        p->next = n;
+    }
+    n->item = item;
+    n->next = NULL;
+}
 // Display whole link list
 void SLL::display(){
     while(start!=NULL){
@@ -60,8 +76,7 @@ int main() {
     
     s1.insertAtStart(10);
     s1.insertAtStart(20);
-    s1.insertAtStart(30);
-    s1.insertAtStart(40);
+    s1.insertAtLast(90);
     s1.display();
 
     return 0;
