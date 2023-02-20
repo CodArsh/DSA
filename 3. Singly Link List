@@ -3,56 +3,55 @@
 using namespace std;
 
 // NODE Container
-struct node{
+struct node {
     int item;
     node* next;
 };
 
 // SLL stands for Singly Link List
-class SLL{
+class SLL {
   public:
     node* start;
     int counter=0;
-    
+
   public:
     SLL();
-    
-    // Methods for Insertion 
+
+    // Methods for Insertion
     void insertAtStart(int);
     void insertAfter(int, int);
     void insertAtLast(int);
-    
+
     // Methods for Deletion
-    void deleteAtStart(int);
-    void deleteAftrt(node*, int);
-    void deleteAtLast(int);
-    
-    void search(int);
+    void deleteFirst();
+    void deleteNode(int);
+    void deleteLast();
+
+    void searchNode(int);
     void display();
 
-    
+
 };
-// Constructor 
-SLL::SLL(){
+// Constructor
+SLL::SLL() {
     start=NULL;
 }
 
-void SLL::insertAtStart(int item){
+void SLL::insertAtStart(int item) {
     node* n = new node;
     n->item = item;
     n->next=start;
     start=n;
 }
 
-void SLL::insertAtLast(int item){
+void SLL::insertAtLast(int item) {
     node *n = new node;
     node *p;
     p = start;
-    if(start == NULL){
+    if(start == NULL) {
         start = n;
-    }
-    else{
-        while(p->next!=NULL){
+    } else {
+        while(p->next!=NULL) {
             p = p->next;
         }
         p->next = n;
@@ -61,29 +60,28 @@ void SLL::insertAtLast(int item){
     n->next = NULL;
 }
 
-void SLL::insertAfter(int place, int item){
+void SLL::insertAfter(int place, int item) {
     node *n = new node;
     node *p;
     p = start;
-   try{
-        while(p!=NULL){
-            if(p->item == place){
+    try {
+        while(p!=NULL) {
+            if(p->item == place) {
                 throw true;
             }
             p = p->next;
         }
-   }
-   catch (bool e){
-       if(e){
+    } catch (bool e) {
+        if(e) {
             n->next = p->next;
             p->next = n;
             n->item = item;
-       }
-   }
+        }
+    }
 }
 // Display whole link list
-void SLL::display(){
-    while(start!=NULL){
+void SLL::display() {
+    while(start!=NULL) {
         if(start->next != NULL)
             cout<<start->item<<" => ";
         else cout<<start->item;
@@ -91,14 +89,91 @@ void SLL::display(){
     }
 }
 
+
+void SLL::deleteFirst() {
+    node *temp = new node;
+    temp = start;
+    start = start->next;
+    delete temp;
+}
+
+void SLL::deleteLast() {
+    node *temp = new node;
+    temp = start;
+    while(temp->next->next!= NULL) {
+        temp = temp->next;
+    }
+    temp->next = NULL;
+    delete temp->next;
+
+}
+
+void SLL::deleteNode(int t) {
+    node *n = new node;
+    n = start;
+    try {
+        if(n==NULL){
+            cout<<"List is empty !"<<endl;
+            return;
+        }
+        if(n->next == NULL && n->item == t){
+            delete n;
+            start = NULL;
+            return;
+        }
+        while(n != NULL) {
+            if(n->item == t)
+                throw t;
+            n = n->next;
+        }
+    } catch(int e) {
+        if(e==t) {
+           node *prev = start;
+           node *curr = start->next;
+          if(prev->item == t)
+                deleteFirst();
+            else{
+                 while(curr->item != t){
+            curr = curr->next;
+            prev = prev->next;
+           }
+           prev->next = curr->next;
+           delete curr;
+            }
+        }
+    }
+}
+
+void SLL::searchNode(int check){
+    node *temp = new node;
+    temp = start;
+    try{
+        while(temp != NULL){
+            if(temp->item == check)
+                throw 1;
+            temp = temp->next;
+        }
+        throw 0;
+    }
+    catch(int e){
+        if(e==1)
+            cout<<check<<" Found"<<endl;
+        else
+            cout<<check<<" Not Found"<<endl;
+    }
+}
 int main() {
     // Write C++ code here
     SLL s1;
-    
-    s1.insertAtStart(10);
-    s1.insertAtStart(20);
-    s1.insertAtLast(90);
-    s1.insertAfter(190,33);
+    s1.insertAtStart(3);
+    s1.insertAtStart(2);
+    s1.insertAtStart(1);
+    s1.insertAtLast(999);
+    s1.insertAfter(1,55);
+    s1.deleteFirst();
+    s1.deleteNode(3);
+    s1.deleteLast();
+    s1.searchNode(20);
     s1.display();
 
     return 0;
