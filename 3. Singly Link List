@@ -19,7 +19,7 @@ class SLL{
     
     // Methods for Insertion 
     void insertAtStart(int);
-    void insertAftrt(node*, int);
+    void insertAfter(int, int);
     void insertAtLast(int);
     
     // Methods for Deletion
@@ -60,11 +60,32 @@ void SLL::insertAtLast(int item){
     n->item = item;
     n->next = NULL;
 }
+
+void SLL::insertAfter(int place, int item){
+    node *n = new node;
+    node *p;
+    p = start;
+   try{
+        while(p!=NULL){
+            if(p->item == place){
+                throw true;
+            }
+            p = p->next;
+        }
+   }
+   catch (bool e){
+       if(e){
+            n->next = p->next;
+            p->next = n;
+            n->item = item;
+       }
+   }
+}
 // Display whole link list
 void SLL::display(){
     while(start!=NULL){
         if(start->next != NULL)
-            cout<<start->item<<" -> ";
+            cout<<start->item<<" => ";
         else cout<<start->item;
         start = start->next;
     }
@@ -77,6 +98,7 @@ int main() {
     s1.insertAtStart(10);
     s1.insertAtStart(20);
     s1.insertAtLast(90);
+    s1.insertAfter(20,33);
     s1.display();
 
     return 0;
