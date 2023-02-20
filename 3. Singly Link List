@@ -98,7 +98,7 @@ int main() {
     s1.insertAtStart(10);
     s1.insertAtStart(20);
     s1.insertAtLast(90);
-    s1.insertAfter(20,33);
+    s1.insertAfter(190,33);
     s1.display();
 
     return 0;
