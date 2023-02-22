@@ -12,8 +12,17 @@ class DLL {
     node *start;
   public:
     DLL();
+    
+    // insertion
     void insertAtStart(int);
     void insertAtLast(int);
+    void insertAfter(int, int);
+    
+    // deletion
+    void deleteFirst();
+    void deleteLast();
+    void deleteAfter(int);
+    
     void display();
 };
 DLL::DLL() {
@@ -44,6 +53,47 @@ void DLL::insertAtLast(int nodeValue) {
     }
 }
 
+void DLL::insertAfter(int check, int item){
+    node *n = new node;
+    node *found = new node;
+    found = start;
+    try{
+        while(found != NULL){
+            if(found->item == check)
+                 throw 1;
+            found = found->next;
+         }
+         throw 0;
+    }
+    catch(int e){
+        if(e==1){
+            n->next = found->next;
+            found->next = n;
+            n->item = item;
+        }
+        else cout<<"Oops ! "<<check<<" Not Found in list"<<endl;
+    }
+}
+
+void DLL::deleteFirst(){
+    node *n = new node;
+    n = start;
+    if(start == NULL){
+        cout<<"List is empty !";
+    }
+    else if(start->next == NULL){
+        start = NULL;
+        delete n;
+    }
+    else{
+        start = start->next;
+        delete n;
+    }
+}
+
+void DLL::deleteLast(){
+    node *n = new node;    
+}
 
 void DLL::display() {
     while(start != NULL) {
@@ -63,6 +113,9 @@ int main() {
     d1.insertAtStart(2);
     d1.insertAtStart(14);
     d1.insertAtLast(100);
+    d1.insertAfter(100, 20);
+    d1.deleteFirst();
+    d1.deleteLast();
     d1.display();
     return 0;
 }
