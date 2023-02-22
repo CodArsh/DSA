@@ -110,7 +110,6 @@ void DLL::deleteLast() {
 }
 
 void DLL::deleteAfter(int check) {
-    node *n = new node;
     node *x = new node;
     node *found = new node;
     node *pr = new node;
