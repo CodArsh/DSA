@@ -1,0 +1,39 @@
+============= Not Completed ==============
+
+#include <iostream>
+using namespace std;
+
+struct node{
+    int item;
+    node *next;
+};
+class CLL{
+    public:
+        node *last;
+    public:
+        CLL();
+        void insertFirst(int);
+        void insertLast(int);
+        void displayNode();
+};
+CLL::CLL(){
+    this->last = NULL;
+}
+void CLL::insertFirst(int item){
+    node *n = new node;
+    n->item = item;
+    if(last == NULL){
+        last = n;
+    }
+}
+void CLL::displayNode(){
+    node *temp = new node;
+    temp = last->next;
+   
+}
+int main()
+{
+    CLL c1;
+    c1.insertFirst(4);
+    c1.displayNode();
+}
