@@ -1,39 +1,104 @@
-============= Not Completed ==============
-
 #include <iostream>
 using namespace std;
 
-struct node{
-    int item;
+
+struct node {
+    int data;
     node *next;
 };
-class CLL{
-    public:
-        node *last;
-    public:
-        CLL();
-        void insertFirst(int);
-        void insertLast(int);
-        void displayNode();
+class CLL {
+  public:
+    node *head;
+  public:
+    CLL();
+    void insertAtStart(int);
+    void insertAtEnd(int);
+    void deleteStart();
+    void deleteEnd();
+    void display();
 };
-CLL::CLL(){
-    this->last = NULL;
+CLL::CLL() {
+    head=NULL;
 }
-void CLL::insertFirst(int item){
+void CLL::insertAtEnd(int data) {
     node *n = new node;
-    n->item = item;
-    if(last == NULL){
-        last = n;
+    node *temp = head;
+    if(head==NULL) {
+        insertAtStart(data);
+        return;
     }
+    while(temp->next != head) {
+        temp=temp->next;
+    }
+    n->data = data;
+    temp->next = n;
+    n->next = head;
 }
-void CLL::displayNode(){
+void CLL::insertAtStart(int data) {
+    node *n = new node;
+
+    if(head == NULL) {
+        n->next = n;
+        n->data = data;
+        head=n;
+        return;
+    }
+    node *temp = head;
+    while(temp->next != head) {
+        temp = temp->next;
+    }
+    n->next = temp->next;
+    temp->next = n;
+    head=n;
+    n->data = data;
+}
+
+void CLL::deleteStart() {
+    node *temp = head;
+    if(head == NULL){
+        cout<<"List is empty !";
+        return;
+    }
+    while(temp->next != head){
+        temp = temp->next;
+    }
+    node *n = new node;
+    temp->next = head->next;
+    head = head->next;
+    delete n;
+
+}
+
+void CLL::deleteEnd(){
     node *temp = new node;
-    temp = last->next;
-   
+    temp = head;
+    while(temp->next->next != head){
+        temp = temp->next;
+    }
+    node *n = new node;
+    n = temp->next;
+    temp->next = head;
+    delete n;
 }
-int main()
-{
+
+void CLL::display() {
+    node *temp = head;
+    do {
+        cout<<temp->data<<" ";
+        temp = temp->next;
+    } while(temp != head);
+}
+
+int main() {
     CLL c1;
-    c1.insertFirst(4);
-    c1.displayNode();
+    c1.insertAtEnd(99);
+    c1.insertAtStart(12);
+    c1.insertAtStart(2);
+    c1.insertAtStart(120);
+    c1.insertAtEnd(560);
+    c1.deleteEnd();
+    c1.deleteEnd();
+    c1.deleteStart();
+    c1.display();
+    return 0;
 }
