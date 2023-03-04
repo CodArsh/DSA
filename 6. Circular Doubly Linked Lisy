@@ -1,0 +1,112 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+    node* prev;
+    int item;
+    node *next;
+};
+class CDL {
+  private:
+    node* start;
+  public:
+    CDL();
+    void insertAtStart(int);
+    void insertAtEnd(int);
+    void deleteFirst();
+    void deleteLast();
+    void displayNode();
+};
+CDL::CDL() {
+    start = NULL;
+}
+void CDL::insertAtStart(int data) {
+    node* n = new node;
+    if(start==NULL) {
+        start=n;
+        n->prev=n;
+        n->item=data;
+        n->next=n;
+    } else {
+        node* temp = new node;
+        temp = start;
+        n->item=data;
+        n->next = start;
+        temp->prev = n->next;
+        while(temp->next != start) {
+            temp = temp->next;
+        }
+        n->prev = temp;
+        temp->next = n;
+        start=n;
+    }
+}
+void CDL::insertAtEnd(int data) {
+    node* n = new node;
+    node* temp = start;
+    if(start != NULL) {
+        while(temp->next != start) {
+            temp = temp->next;
+        }
+        temp->next = n;
+        n->prev = temp;
+        n->item = data;
+        n->next = start;
+        start->prev = n;
+    } else {
+        insertAtStart(data);
+    }
+}
+void CDL::deleteFirst() {
+    node* n = start;
+    node* last = start;
+    while(last->next != start) {
+        last = last->next;
+    }
+    start = start->next;
+    start->prev = n->prev;
+    last->next = start;
+    delete n;
+}
+void CDL::deleteLast() {
+    if(start != NULL){
+     if(start->next == start){
+        start= NULL;
+     }
+     else{
+        node* temp = start;
+        while(temp->next->next != start){
+            temp=temp->next;
+        }
+        node* lastNode = temp->next;
+        temp->next = start;
+        start->prev = temp;
+        delete lastNode;
+     }
+    }
+}
+void CDL::displayNode() {
+    node* temp = new node;
+    temp = start;
+    do {
+        cout<<temp->item<<" ";
+        temp = temp->next;
+    } while(temp!= start);
+}
+
+int main() {
+    CDL c1;
+    c1.insertAtStart(2);
+    c1.insertAtStart(3);
+    c1.insertAtStart(4);
+    c1.insertAtStart(6);
+    c1.insertAtStart(7);
+    c1.insertAtStart(8);
+    c1.deleteLast();
+    c1.deleteLast();
+    c1.deleteLast();
+    c1.insertAtEnd(99);
+    c1.deleteFirst();
+    c1.displayNode();
+    return 0;
+}
