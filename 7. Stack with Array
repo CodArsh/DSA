@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+#define SIZE 5
+
+class Stack {
+  private:
+    int *arr;
+    int top;
+  public:
+    // constructor
+    Stack();
+
+    // push the value in stack
+    void push(int);
+
+    // remove value from stack
+    void pop();
+
+    // display top value
+    void showTop();
+
+    // if stack is full this function return true
+    bool isFull();
+
+    // if stack is empty this function return true
+    bool isEmpty();
+
+    // display whole stack
+    void displayStack();
+};
+Stack::Stack() {
+    arr = new int[SIZE];
+    top = -1;
+}
+bool Stack::isEmpty() {
+    return top==-1;
+}
+void Stack::push(int data) {
+    if(top==SIZE-1) {
+        cout<<"Stack Overflow !"<<endl;
+    } else {
+        top++;
+        arr[top] = data;
+    }
+}
+void Stack::pop() {
+    if(isEmpty()) {
+        cout<<"Stack is Empty !"<<endl;
+    } else {
+        top--;
+    }
+}
+bool Stack::isFull(){
+    return top==SIZE-1;
+}
+void Stack::showTop() {
+    if(isEmpty()) {
+        cout<<"Stack is Empty !";
+    } else {
+        cout<<"TOP : "<<arr[top]<<endl;
+    }
+}
+void Stack::displayStack() {
+    if(isEmpty()) {
+        cout<<"Stack is Empty !"<<endl;
+    } else {
+        cout<<endl<<"========== STACK =========="<<endl;
+        for(int i = 0; i <= top; i++) {
+            cout<<arr[i]<<endl;
+        }
+    }
+}
+int main() {
+    Stack s1;
+    s1.push(5);
+    s1.push(50);
+    s1.push(15);
+    s1.push(52);
+    s1.push(35);
+    s1.pop();
+    s1.pop();
+    s1.pop();
+    cout<<"EMPTY ? : "<<s1.isEmpty()<<endl;
+    cout<<"FULL ? : "<<s1.isFull()<<endl;
+    s1.showTop();
+    s1.displayStack();
+}
