@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+#define EMPTY_LIST 1
+struct node {
+    int item;
+    node *next;
+};
+class Queue_SLL {
+  private:
+    node *front; // start
+    node *rear;
+  public:
+    Queue_SLL();
+    ~Queue_SLL();
+    Queue_SLL(Queue_SLL&);
+    void insert(int);
+    void getFront();
+    void getRear();
+    void del();
+    int count();
+    void display();
+};
+Queue_SLL::Queue_SLL() {
+    front = NULL;
+    rear = NULL;
+}
+Queue_SLL::~Queue_SLL() {
+    while(front)
+        del();
+}
+Queue_SLL::Queue_SLL(Queue_SLL &q) {
+    front = rear = NULL;
+    node *n = q.front;
+    while(n) {
+        insert(n->item);
+        n=n->next;
+    }
+}
+void Queue_SLL::insert(int data) {
+    node *ptr = new node;
+    ptr->item = data;
+    ptr->next = NULL;
+    if(rear==NULL) {
+        front=ptr;
+        rear=ptr;
+    } else {
+        rear->next = ptr;
+        rear=ptr;
+    }
+
+}
+void Queue_SLL::del() {
+    if(front==NULL) {
+        throw EMPTY_LIST;
+    }
+    if(front==rear) {
+        delete front;
+        front=NULL;
+        rear=NULL;
+    } else {
+        node *n = new node;
+        n = front;
+        front = front->next;
+        delete n;
+    }
+}
+void Queue_SLL::getFront() {
+    if(front==NULL) {
+        throw EMPTY_LIST;
+    }
+    cout<<endl<<"Front : "<<front->item<<endl;
+}
+
+void Queue_SLL::getRear() {
+    if(rear==NULL) {
+        throw EMPTY_LIST;
+    }
+    cout<<endl<<"Rear : "<<rear->item<<endl;
+}
+int Queue_SLL::count() {
+    node *t = new node;
+    t = front;
+    int c=0;
+    while(t) {
+        c++;
+        t=t->next;
+    }
+    return c;
+}
+void Queue_SLL::display() {
+    if(front==NULL) {
+        throw EMPTY_LIST;
+    }
+    node *t = front;
+    cout<<"Queue : ";
+    while(t) {
+        cout<<t->item<<" ";
+        t=t->next;
+    }
+}
+int main() {
+    Queue_SLL q1;
+    q1.insert(23);
+    q1.insert(24);
+    q1.insert(25);
+    q1.insert(26);
+    q1.del();
+    q1.insert(99);
+    //q1.del();
+    q1.display();
+    cout<<endl<<"Count : "<<q1.count()<<endl;
+    q1.getFront();
+    q1.getRear();
+    return 0;
+}
