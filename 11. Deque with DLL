@@ -1,0 +1,111 @@
+#include <iostream>
+
+using namespace std;
+
+struct node {
+    node* prev;
+    int item;
+    node* next;
+};
+class Deque {
+  private:
+    node* front;
+    node* rear;
+  public:
+    Deque(); // constructor
+    void insertFront(int);
+    void insertRear(int);
+    void deleteFront();
+    void deleteRear();
+    void getFront();
+    void getRear();
+    void display();
+};
+Deque::Deque() {
+    front = rear = NULL;
+}
+void Deque::insertFront(int data) {
+    node* n = new node;
+    n->prev = NULL;
+    n->item = data;
+    n->next = NULL;
+    if(front==NULL) {
+        front = rear = n;
+    } else {
+        n->next = front;
+        front->prev = n;
+        front = n;
+    }
+}
+void Deque::insertRear(int data) {
+    node* n = new node;
+    n->prev = NULL;
+    n->item = data;
+    n->next = NULL;
+    if(rear==NULL) {
+        front = rear = n;
+    } else {
+        n->prev = rear;
+        rear->next= n;
+        rear = n;
+    }
+}
+void Deque::deleteFront() {
+    if(front==NULL) {
+        cout<<"Deque Empty !";
+    } else if(front==rear) {
+        delete front;
+        front=rear=NULL;
+    } else {
+        front = front->next;
+        delete front->prev;
+        front->prev=NULL;
+    }
+}
+void Deque::deleteRear() {
+    if(rear==NULL) {
+        cout<<"Deque Empty !";
+    }  else if(front==rear) {
+        delete rear;
+        front=rear=NULL;
+    } else {
+        rear = rear->prev;
+        delete rear->next;
+        rear->next=NULL;
+    }
+}
+void Deque::getFront() {
+    if(rear==NULL) {
+        cout<<"Deque Empty !";
+    } else {
+        cout<<endl<<"Front : "<<front->item<<endl;
+    }
+}
+void Deque::getRear() {
+    if(rear==NULL) {
+        cout<<"Deque Empty !";
+    } else {
+        cout<<endl<<"Rear : "<<rear->item<<endl;
+    }
+}
+void Deque::display() {
+    node* ptr = front;
+    while(ptr) {
+        cout<<ptr->item<<" ";
+        ptr=ptr->next;
+    }
+}
+int main() {
+    Deque d1;
+    d1.insertRear(5);
+    d1.insertRear(15);
+    d1.insertFront(1);
+    d1.insertFront(1);
+    d1.insertFront(10);
+    d1.deleteRear();
+    d1.deleteFront();
+    d1.getFront();
+    d1.getRear();
+    d1.display();
+    return 0;
+}
