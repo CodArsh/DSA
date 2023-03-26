@@ -1,0 +1,250 @@
+#include <iostream>
+using namespace std;
+#define EMPTY_TREE;
+#define DATA_NOT_FOUND;
+struct node {
+    node* left;
+    int item;
+    node* right;
+};
+class BST {
+  private:
+    node* root;
+    void recPreOrder(node *);
+    void recInOrder(node *);
+    void recPostOrder(node *);
+  public:
+    BST();
+    ~BST();
+    bool isEmpty();
+    void insert(int);
+    void preOrder();
+    void inOrder();
+    void postOrder();
+    node * search(int);
+    void del(int);
+};
+
+BST::BST() {
+    root = NULL;
+}
+BST::~BST() {
+    while(root) {
+        del(root->item);
+    }
+}
+bool BST::isEmpty() {
+    return root==NULL;
+}
+void BST::insert(int data) {
+    node *ptr;
+    if(isEmpty()) {
+        node *n = new node;
+        n->left = NULL;
+        n->item = data;
+        n->right = NULL;
+        root = n;
+    } else {
+        bool flag = true;
+        ptr = root;
+        //traversing
+        while(flag) {
+            if(data == ptr->item) {
+                break; // because duplicate item not allowed
+            }
+            if(data < ptr->item) { //left subtree
+                if(ptr->left == NULL) {
+                    node *n = new node;
+                    n->left = NULL;
+                    n->item = data;
+                    n->right = NULL;
+                    ptr->left = n;
+                    flag = false;
+                } else {
+                    ptr = ptr->left;
+                }
+            } else { //right subtree
+                if(ptr->right == NULL) {
+                    node *n = new node;
+                    n->left = NULL;
+                    n->item = data;
+                    n->right = NULL;
+                    ptr->right = n;
+                    flag = false;
+                } else {
+                    ptr = ptr->right;
+                }
+            }
+        }
+    }
+}
+
+// Pre Order Recursion
+void BST::recPreOrder(node *ptr) {
+    if(ptr) {
+        cout<<ptr->item<<" ";
+        recPreOrder(ptr->left);
+        recPreOrder(ptr->right);
+    }
+}
+void BST::preOrder() {
+    recPreOrder(root);
+}
+
+// In Order Recursion
+void BST::recInOrder(node *ptr) {
+    if(ptr) {
+        recInOrder(ptr->left);
+        cout<<ptr->item<<" ";
+        recInOrder(ptr->right);
+    }
+}
+void BST::inOrder() {
+    recInOrder(root);
+}
+
+// Post Order Recursion
+void BST::recPostOrder(node *ptr) {
+    if(ptr) {
+        recPostOrder(ptr->left);
+        recPostOrder(ptr->right);
+        cout<<ptr->item<<" ";
+    }
+}
+
+void BST::postOrder() {
+    recPostOrder(root);
+}
+
+node* BST::search(int data) {
+    node *ptr = root;
+    while(ptr) {
+        if(ptr->item==data) {
+            return ptr;
+        }
+        if(data < ptr->item) {
+            ptr = ptr->left;
+        } else {
+            ptr = ptr->right;
+        }
+    }
+    return NULL;
+}
+void BST::del(int data) {
+    node *ptr, *parPtr;
+    if(isEmpty()) {
+        throw EMPTY_TREE;
+    }
+    parPtr=NULL;
+    ptr=root;
+    while(ptr) {
+        if(ptr->item==data) {
+            break;
+        }
+        if(ptr->item < data) {
+            parPtr = ptr;
+            ptr = ptr->right;
+        } else {
+            parPtr = ptr;
+            ptr = ptr->left;
+        }
+    }
+    if(ptr == NULL) {
+        throw DATA_NOT_FOUND;
+    }
+    if(parPtr == NULL && ptr != NULL) { // root node to be deleted
+        if(ptr->left == NULL && ptr->right == NULL) { // no child
+            delete ptr;
+            root = NULL;
+        } else if(ptr->left && ptr->right) { // two children
+            node *suc, *parSuc;
+            suc = ptr->right;
+            parSuc = ptr;
+            while(suc->left != NULL) {
+                parSuc=suc;
+                suc=suc->left;
+            }
+            ptr->item = suc->item;
+
+            //now delete successor
+            if(suc == parSuc->left) {
+                parSuc->left = suc->right;
+            } else {
+                parSuc->right = suc->right;
+            }
+            delete suc;
+        } else { // one child
+            if(ptr->left) {
+                root = ptr->left;
+            } else {
+                root = ptr->right;
+            }
+            delete ptr;
+        }
+    } else { // not a root node
+        if(ptr->left == NULL && ptr->right == NULL) { // no child
+            if(ptr == parPtr->left) { // ptr is left child of parent ptr
+                parPtr->left = NULL;
+                delete ptr;
+            } else { // ptr is right child of parent ptr
+                parPtr->right = NULL;
+                delete ptr;
+            }
+        } else if(ptr->left && ptr->right) { // two children
+            node *suc, *parSuc;
+            suc = ptr->right;
+            parSuc = ptr;
+            while(suc->left != NULL) {
+                parSuc=suc;
+                suc=suc->left;
+            }
+            ptr->item = suc->item;
+
+            //now delete successor
+            if(suc == parSuc->left) {
+                parSuc->left = suc->right;
+            } else {
+                parSuc->right = suc->right;
+            }
+            delete suc;
+
+        } else { // one child
+            if(ptr == parPtr->left) {
+                if(ptr->left) {
+                    parPtr->left = ptr->left;
+                } else {
+                    parPtr->left = ptr->right;
+                }
+                delete ptr;
+            } else {
+                if(ptr->left) {
+                    parPtr->right = ptr->left;
+                } else {
+                    parPtr->right = ptr->right;
+                }
+                delete ptr;
+            }
+        }
+    }
+}
+int main() {
+    BST b1;
+    b1.insert(50);
+    b1.insert(20);
+    b1.insert(30);
+    b1.search(30);
+    b1.insert(70);
+    b1.insert(90);
+    b1.insert(10);
+    cout<<"Post Order : ";
+    b1.postOrder();
+    cout<<endl;
+
+    cout<<"In Order : ";
+    b1.inOrder();
+    cout<<endl;
+
+    cout<<"Pre Order : ";
+    b1.preOrder();
+    return 0;
+}
